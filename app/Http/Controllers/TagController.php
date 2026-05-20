@@ -66,9 +66,11 @@ class TagController extends Controller
      */
     public function show(Tag $tag)
     {
-        return $this->successResponse(
-            new TagResource($tag->load('notes'))
-        );
+        $notes = $tag->notes()->with('tags')->latest()->get();
+
+        $allTags = Tag::all();
+
+        return view('tag_notes', compact('tag', 'notes', 'allTags'));
     }
 
     /**

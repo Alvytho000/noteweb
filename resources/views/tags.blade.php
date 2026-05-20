@@ -123,67 +123,28 @@
 
             <!-- Tags Grid -->
             <template x-if="filteredTags.length > 0">
-                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                     <template x-for="tag in filteredTags" :key="tag.id">
-                        <div
-                            class="group bg-white/70 backdrop-blur-sm border border-[#1B5E20]/5 rounded-[3rem] p-10 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 flex flex-col h-full">
-                            <!-- Card Header -->
-                            <div class="flex items-start justify-between mb-8">
-                                <div class="w-16 h-16 rounded-[1.5rem] flex items-center justify-center text-2xl font-black italic shadow-inner bg-[#4CAF50]/15 text-[#1B5E20]">
-                                    <span x-text="tag.name.substring(0, 1).toUpperCase()"></span>
-                                </div>
-                                <div class="bg-[#1B5E20]/5 px-4 py-2 rounded-full">
-                                    <span class="text-[10px] font-black text-[#1B5E20] tracking-widest uppercase"
-                                        x-text="`${tag.notes_count} Notes`"></span>
-                                </div>
-                            </div>
+                        <div @click="window.location.href = `{{ url('tags') }}/${tag.id}`"
+                            class="group h-32 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm border border-[#1B5E20]/10 rounded-xl p-4 shadow-sm hover:shadow-md hover:border-[#4CAF50]/30 hover:bg-[#4CAF50]/5 transition-all cursor-pointer relative">
 
-                            <!-- Card Content -->
-                            <div class="flex-grow">
-                                <h3 class="text-3xl font-black text-[#1B5E20] mb-4 tracking-tighter italic uppercase group-hover:text-[#4CAF50] transition-colors"
-                                    x-text="tag.name"></h3>
+                            <!-- Title -->
+                            <span class="text-center text-sm font-bold text-[#1B5E20] tracking-tight italic uppercase group-hover:text-[#4CAF50] transition-colors truncate w-full px-2"
+                                x-text="tag.name" :title="tag.name"></span>
 
-                                <!-- Recent Notes Preview -->
-                                <div class="space-y-3 mb-8">
-                                    <template x-if="tag.notes.length > 0">
-                                        <template x-for="note in tag.notes" :key="note.id">
-                                            <div
-                                                class="flex items-center gap-3 text-[#1B5E20]/60 group/note hover:text-[#1B5E20] transition-colors cursor-default">
-                                                <div
-                                                    class="w-1.5 h-1.5 rounded-full bg-[#4CAF50]/30 group-hover/note:bg-[#4CAF50] transition-colors">
-                                                </div>
-                                                <span class="text-xs font-bold truncate" x-text="note.title"></span>
-                                            </div>
-                                        </template>
-                                    </template>
-                                    <template x-if="tag.notes.length === 0">
-                                        <p
-                                            class="text-[10px] font-medium text-[#1B5E20]/30 italic uppercase tracking-widest">
-                                            Belum ada catatan</p>
-                                    </template>
-                                </div>
-                            </div>
+                            <!-- Notes Badge -->
+                            <span class="text-[11px] font-black text-[#1B5E20]/60 tracking-wider uppercase bg-[#1B5E20]/5 px-3 py-1 rounded-full mt-3"
+                                x-text="`${tag.notes_count} Notes`"></span>
 
-                            <!-- Card Footer/Actions -->
-                            <div class="pt-6 border-t border-[#1B5E20]/5 flex items-center justify-between">
-                                <a :href="`{{ url('tags') }}/${tag.id}`"
-                                    class="text-[9px] font-black tracking-[0.3em] text-[#4CAF00] uppercase flex items-center gap-2 group-hover:gap-3 transition-all">
-                                    <span>Lihat Detail</span>
-                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
-                                            d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                                    </svg>
-                                </a>
-                                <div class="flex gap-2 items-center">
-                                    <button @click.prevent="deleteTag(tag.id)" class="text-[#1B5E20]/30 hover:text-red-500 transition-colors bg-[#1B5E20]/5 p-2 rounded-full" title="Hapus Kategori">
-                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                        </svg>
-                                    </button>
-                                    <div class="w-2 h-2 rounded-full bg-[#4CAF50]"></div>
-                                </div>
-                            </div>
+                            <!-- Delete Button -->
+                            <button @click.stop.prevent="deleteTag(tag.id)"
+                                class="absolute top-2 right-2 text-[#1B5E20]/30 hover:text-red-500 transition-colors hover:bg-red-50 p-2 rounded-full"
+                                title="Hapus Kategori">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                            </button>
                         </div>
                     </template>
                 </div>
