@@ -66,11 +66,16 @@ class TagController extends Controller
      */
     public function show(Tag $tag)
     {
-        $notes = $tag->notes()->with('tags')->latest()->get();
+        // Muat relasi notes, DAN pastikan setiap note memuat relasi tags-nya juga (Eager Loading Nested)
+        // serta diurutkan berdasarkan catatan terbaru
+        $tag->load(['notes' => function ($query) {
+            $query->with('tags')->latest();
+        }]);
 
-        $allTags = Tag::all();
-
-        return view('tag_notes', compact('tag', 'notes', 'allTags'));
+        return $this->successResponse(
+            new TagResource($tag),
+            'Tag and its nested notes retrieved successfully'
+        );
     }
 
     /**

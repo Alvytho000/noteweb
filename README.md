@@ -7,6 +7,29 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+---
+
+## 🤖 AI Agent Instructions & Guardrails
+> **IMPORTANT:** Read and follow these rules strictly before modifying any files in this project. You have full autonomy to code, but you must operate within these boundaries.
+
+### 1. Project Stack Context
+* **Backend:** Laravel (PHP) dengan standard MVC/Api architecture.
+* **Frontend:** Blade templates, Tailwind CSS, Alpine.js (Client-side interactivity).
+* **Database:** Eloquent ORM, Migrations, standard relations.
+
+### 2. Autonomous Action Rules (Do This Without Asking)
+* **Consistency First:** If modifying a view, check how similar views are written. If a view uses Alpine.js for rendering lists (e.g. `dashboard.blade.php`), you **MUST** use Alpine.js (`<template x-for="...">`) for similar views (e.g. `tag_notes.blade.php`). Do not mix Blade loops with Alpine rendering unless explicitly requested.
+* **Refactoring:** Clean up duplicate code, optimize Eloquent queries (avoid N+1 problems by using `with()`), and ensure proper formatting.
+* **Error Handling:** Always include `.catch()` blocks in JavaScript `fetch()` calls and implement standard Laravel validation rules for backend endpoints.
+* **Tailwind UI:** Reuse existing custom palette tokens (e.g., `#1B5E20` for Forest Green, `#4CAF50` for Nature Green, `#F5F5DC` for Beige). Keep the "Nature/Alam" design consistency.
+
+### 3. Strict Boundaries (STOP & ASK Before Proceeding)
+* **Destructive Changes:** Stop if a change requires dropping database columns or tables without a new migration.
+* **Package Installation:** Stop before running `composer require` or `npm install` for third-party packages not listed in the default stack (excluding `laravel/boost`).
+* **Breaking Routing Changes:** Stop if you need to rename existing API endpoints or Web Named Routes that might break other components.
+
+---
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
@@ -37,22 +60,3 @@ Laravel's predictable structure and conventions make it ideal for AI coding agen
 composer require laravel/boost --dev
 
 php artisan boost:install
-```
-
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

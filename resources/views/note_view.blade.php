@@ -1,11 +1,17 @@
 <x-app-layout>
+    @php
+        $tagId = request()->query('tag');
+        $backRoute = $tagId ? route('tags.show', $tagId) : route('dashboard');
+        $backText = $tagId ? 'Kembali ke Kategori' : 'Kembali ke Dashboard';
+        $editRoute = route('notes.edit', $note->id) . ($tagId ? '?tag=' . $tagId : '');
+    @endphp
     <!-- Back to Dashboard at top left below navbar -->
     <div class="w-[98%] mx-auto mb-2 px-4 sm:px-0">
-        <a href="{{ route('dashboard') }}" wire:navigate class="inline-flex items-center gap-2 text-[#2E7D32] hover:text-[#1B5E20] font-semibold transition-all hover:-translate-x-1">
+        <a href="{{ $backRoute }}" wire:navigate class="inline-flex items-center gap-2 text-[#2E7D32] hover:text-[#1B5E20] font-semibold transition-all hover:-translate-x-1">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
-            Kembali ke Dashboard
+            <span>{{ $backText }}</span>
         </a>
     </div>
 
@@ -25,9 +31,9 @@
                         </h1>
                         <div class="flex flex-wrap gap-3">
                             @foreach($note->tags as $tag)
-                                <span class="px-4 py-1.5 bg-[#2E7D32]/10 text-[#2E7D32] rounded-full text-xs font-bold tracking-wide uppercase border border-[#2E7D32]/5">
-                                    {{ $tag->name }}
-                                </span>
+                            <span class="px-4 py-1.5 bg-[#2E7D32]/10 text-[#2E7D32] rounded-full text-xs font-bold tracking-wide uppercase border border-[#2E7D32]/5">
+                                {{ $tag->name }}
+                            </span>
                             @endforeach
                         </div>
                     </div>
@@ -57,7 +63,7 @@
                             <button onclick="if(confirm('Yakin ingin menghapus catatan ini?')) fetch('/api/notes/{{ $note->id }}', { method: 'DELETE', headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').getAttribute('content'), 'Accept': 'application/json' } }).then(res => res.json()).then(data => { if(data.status === 'success') window.location.href = '{{ route('dashboard') }}'; });" class="flex-1 sm:flex-none px-6 py-2 bg-[#FF0F0F] text-white rounded-lg font-medium text-xs hover:bg-[#CB0000] transition-all shadow-md hover:shadow-lg active:scale-95">
                                 Hapus
                             </button>
-                            <button onclick="window.location.href = '{{ route('notes.edit', $note->id) }}'" class="flex-1 sm:flex-none px-6 py-2 bg-[#2E7D32] text-white rounded-lg font-medium text-xs hover:bg-[#1B5E20] transition-all shadow-md hover:shadow-lg active:scale-95">
+                            <button onclick="window.location.href = '{{ $editRoute }}'" class="flex-1 sm:flex-none px-6 py-2 bg-[#2E7D32] text-white rounded-lg font-medium text-xs hover:bg-[#1B5E20] transition-all shadow-md hover:shadow-lg active:scale-95">
                                 Edit Catatan
                             </button>
                         </div>

@@ -39,10 +39,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Route to display notes for a specific tag
         Route::get('/tags/{tag}', function ($tag) {
             $user = auth()->user();
-            $tagModel = $user->tags()->with(['notes' => function($query) {
-                $query->latest();
-            }])->findOrFail($tag);
-            return view('tag_notes', ['tag' => $tagModel]);
+            $tagModel = $user->tags()->findOrFail($tag);
+            
+            $notes = $tagModel->notes()
+                ->with('tags')
+                ->latest()
+                ->get();
+                
+            $allTags = $user->tags()->get();
+
+            return view('tag_notes', [
+                'tag' => $tagModel,
+                'notes' => $notes,
+                'allTags' => $allTags,
+            ]);
         })->name('tags.show');
 
     Route::get('/notes/{note}', function (\App\Models\Note $note) {

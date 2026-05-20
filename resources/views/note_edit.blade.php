@@ -1,4 +1,8 @@
 <x-app-layout>
+    @php
+        $tagId = request()->query('tag');
+        $cancelRoute = route('notes.view', $note->id) . ($tagId ? '?tag=' . $tagId : '');
+    @endphp
     <div x-data="{
         title: @js($note->title),
         content: @js($note->content),
@@ -34,7 +38,7 @@
             .then(res => res.json())
             .then(data => {
                 if (data.status === 'success') {
-                    window.location.href = '{{ route('notes.view', $note->id) }}';
+                    window.location.href = '{{ $cancelRoute }}';
                 } else {
                     alert('Gagal menyimpan perubahan');
                 }
@@ -48,7 +52,7 @@
     }">
         <!-- Back to View at top left below navbar -->
         <div class="w-[98%] mx-auto mb-2 px-4 sm:px-0">
-            <a href="{{ route('notes.view', $note->id) }}" wire:navigate class="inline-flex items-center gap-2 text-[#2E7D32] hover:text-[#1B5E20] font-semibold transition-all hover:-translate-x-1">
+            <a href="{{ $cancelRoute }}" wire:navigate class="inline-flex items-center gap-2 text-[#2E7D32] hover:text-[#1B5E20] font-semibold transition-all hover:-translate-x-1">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
@@ -136,7 +140,7 @@
                                 </div>
                             </div>
                             <div class="flex gap-4 w-full sm:w-auto">
-                                <a href="{{ route('notes.view', $note->id) }}" class="flex-1 sm:flex-none text-center px-6 py-2 border border-[#2E7D32]/10 text-[#2E7D32]/60 rounded-lg font-medium text-xs hover:bg-[#2E7D32]/5 transition-all">
+                                <a href="{{ $cancelRoute }}" class="flex-1 sm:flex-none text-center px-6 py-2 border border-[#2E7D32]/10 text-[#2E7D32]/60 rounded-lg font-medium text-xs hover:bg-[#2E7D32]/5 transition-all">
                                     Batal
                                 </a>
                                 <button @click="save()" :disabled="saving"

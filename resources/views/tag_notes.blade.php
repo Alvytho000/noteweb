@@ -1,7 +1,8 @@
 <x-app-layout>
     <div class="max-w-7xl mx-auto p-6" x-data="{
         search: '',
-        notes: @js($notes),
+        tagName: '{{ $tag->name }}',
+        notes: @js($tag->notes),
         allTags: @js($allTags),
         natureColors: [
             'bg-[#1B5E20]/5',
@@ -14,9 +15,7 @@
     }">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-12">
             <div>
-                <h2 class="text-4xl font-black text-[#1B5E20] tracking-tighter italic uppercase leading-none">
-                    {{ $tag->name }}
-                </h2>
+                <h2 class="text-4xl font-black text-[#1B5E20] tracking-tighter italic uppercase leading-none" x-text="tagName"></h2>
                 <p class="text-[#1B5E20]/60 mt-2 font-medium tracking-wide">
                     <span x-text="notes.length"></span> Catatan terkait kategori ini
                 </p>
@@ -44,7 +43,7 @@
 
         <div x-show="notes.length > 0" class="flex flex-col gap-4">
             <template x-for="(note, index) in notes" :key="note.id">
-                <a :href="'/notes/' + note.id" wire:navigate
+                <a :href="'/notes/' + note.id + '?tag=' + {{ $tag->id }}" wire:navigate
                     class="group relative bg-white/60 backdrop-blur-md rounded-2xl p-6 sm:p-7 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-500 border border-[#1B5E20]/5 flex flex-col sm:flex-row sm:items-center justify-between gap-6 overflow-hidden">
                     
                     <div class="flex-grow min-w-0">
